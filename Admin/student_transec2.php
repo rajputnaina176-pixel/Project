@@ -58,14 +58,15 @@ $result3 = mysqli_query($conn1,$sql3);
   </style>
 </head>
 <body>
-
+<form class="row g-3 needs-validation"  action="sinsert_transec11.php" method="post" >
   <?php
   while($rows3 = mysqli_fetch_array ($result3)){
 ?> 
 <div>
-<form class="row g-3 needs-validation" novalidate>
+
   <h1> STUDENT INFORMATION</h1>
   <div >
+    <input type="hidden"  name="re" value="<?php echo $reg_num ?> ">
     <label for="validationCustom01" class="form-label">Student Name :</label>
     <input type="text" class="form-control" id="validationCustom01" value="<?php echo $FN?>" required> <label for="validationCustomUsername" class="form-label">Class Name :</label>
       <input type="text" class="form-control" id="student" value="<?php echo $sec?>">
@@ -84,11 +85,16 @@ $result3 = mysqli_query($conn1,$sql3);
           <label for="e_fee">Exam Fee:</label>
           <input style="margin-left: 0px; width: 150px;" name="e_fee" type="text" value="<?php echo $rows3['Exam_fee']?>"><br>
           <label for="t_fee">Tuition Fee:</label>
+          <input type="hidden" name="Tu_fee" id=" Tu_fee"value="<?php echo $rows3['Tu_fee']?> ">
         <select name="class_nm3" id="class_nm3" onchange="net_fee()">
         <option value="<?php echo $rows3['Tu_fee']?>"> Monthly</option>
         <option value="<?php echo $rows3['Tu_fee']*3?>">Quarterly</option>
         <option value="<?php echo $rows3['Tu_fee']*12?>">Yearly</option>
-        </select><br></div>
+        </select><br>
+        <label for="for_mon">For Month:</label>
+       <input type=" text" name="for_mon" placeholder="Month e.g">
+       <input type="text" name="des_fee"  placeholder="Description (optional)">
+      </div>
          <div id="net_f"></div>
         
       </div>    
@@ -103,6 +109,8 @@ $result3 = mysqli_query($conn1,$sql3);
       
   </select>
   </div>
+  <button>SUBMIT </button>
+  </form>
 
 </body>
 

@@ -19,7 +19,7 @@ if (mysqli_num_rows($result) > 0) {
         } else {
           
             $_SESSION["user_nm"] = "Guest";
-            $error = "Invalid username or password";
+            $error = "Invalid password";
             header("Location: login.php?error=" . urlencode($error));
             
         }
@@ -29,7 +29,7 @@ if (mysqli_num_rows($result) > 0) {
 } else {
   
     $_SESSION["user_nm"] = "Guest";
-        $error = "Invalid username or password";
+        $error = "Invalid username & passwword ";
         header("Location: login.php?error=" . urlencode($error));
     
 
