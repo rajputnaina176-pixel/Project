@@ -44,8 +44,10 @@
             <th>Father Name</th>
             <th>DOB</th>
             <th>Edit</th>
-            <th>Delete</th></tr>
+            <th>Delete</th>
+           <th> Transaction History </th></tr>
           <tbody id="ans">  </tbody>
+            
          </table>
         </div>
         
