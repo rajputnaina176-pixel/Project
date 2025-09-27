@@ -48,6 +48,31 @@
             border-radius: 6px;
             font-size: 1rem;
             transition: border-color 0.3s;
+        }
+
+        /* Table Header Styles */
+        .student-table-header {
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            color: white;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .student-table-header h2 {
+            font-size: 24px;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .student-info-subtitle {
+            font-size: 14px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
             min-width: 200px;
         }
 
@@ -194,6 +219,10 @@
     </script>
 </head>
 <body>
+<div class="student-table-header">
+        <h2>Student Information</h2>
+        <div class="student-info-subtitle">Complete Student Records and Management</div>
+    </div>
 
     <div class="search-box">
         <form action="#" method="post" enctype="multipart/form-data" class="search-form">
@@ -203,11 +232,11 @@
         </form>
     </div>
 
+    
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-    
             <th>REGISTRATION NUMBER</th>
             <th>Student Name</th>
             <th>Class Name</th>
@@ -215,9 +244,10 @@
             <th>DOB</th>
             <th>Edit</th>
             <th>Delete</th>
-           <th> Transaction History </th></tr>
+            <th>Transaction History</th>
+            <th>STUDENT INFORMATION</th></tr>
           <tbody id="ans">  </tbody>
-            
+         
          </table>
         </div>
         
