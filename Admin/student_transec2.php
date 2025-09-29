@@ -77,7 +77,7 @@ $result3 = mysqli_query($conn1,$sql3);
 ?> 
 <div>
 
-  <h1> STUDENT INFORMATION</h1>
+  <h1> STUDENT TRANSACTION</h1>
   <div >
     <input type="hidden"  name="re" value="<?php echo $reg_num ?> ">
     <label for="validationCustom01" class="form-label">Student Name :</label>

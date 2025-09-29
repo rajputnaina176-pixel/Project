@@ -15,7 +15,7 @@ while($row= mysqli_fetch_array ($result1)){
                     <td><a href="Admin.php?id1=6&id=<?php echo $row['id']; ?>">Edit</a></td>
                     <td><a href="Delete.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure?')">Delete</a></td>
                      <td><a href="filter.php?reg_num=<?php echo $row['S_REG_NUM']; ?>">View</a></td>
-                        <td><a href="student_transec2.php?reg_num=<?php echo $row['S_REG_NUM']; ?>">View</a></td>
+                        <td><a href="Student_information.php?re=<?php echo $row['S_REG_NUM']; ?>">View</a></td>
                 </tr>
  <?php } 
 // echo $sql1;

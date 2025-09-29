@@ -116,7 +116,7 @@ h1{
 <div class="parent">
    <div class="div1">
    
-   <h1>STUDENT REGISTRATION FORM :</h1>
+   <h1>STUDENT INFORMATION FORM :</h1>
   <table > 
     <tr>
  <td><label for="rno">REGISTRATION NUMBER</label>
@@ -326,13 +326,13 @@ None <input type="radio"  name="Sibling" value="None" />
 
   <tr>
   <td>COUNTRY</td>
-  <td><input type="text" name="Country" value="India" style="font-size:18px;"class-"input"  readonly="readonly" /></td>
+  <td><input type="text" name="Country" value="India" style="font-size:18px;"class="abc"  readonly="readonly" /></td>
   </tr>
    <tr> 
     <td>
       <label for="fileupload" class="custom-file-button">Upload image </label>
       <br><br>
-      <input type="file" name="fileupload" id="fileupload"  class-"input" class="file_up" value="fileupload" accept="images/*" onchange="upload(event)"> <br>
+      <input type="file" name="fileupload" id="fileupload"  class=" file"class="file_up" value="fileupload" accept="images/*" onchange="upload(event)"> <br>
       <div id="imagePreviewContainer">
           <img id ="previewImage" src="#" alt="Image Preview" style="Display:none;max-width:80px;max-height:100px;">
       </div>
