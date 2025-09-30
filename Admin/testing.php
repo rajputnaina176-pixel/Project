@@ -2,39 +2,37 @@
 // Start the session at the very beginning
 session_start();
 
-// --- 1. Database Connection ---
-// Define database credentials
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'database');
+if (!isset($_SESSION['form_err'])) {
+    $_SESSION['form_err'] = "";
+}
 
-// Create a database connection
-$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+// --- 1. Secure Database Connection ---
+$conn = mysqli_connect("localhost", "root", "", "database");
 
 // Check the connection for errors
 if (mysqli_connect_errno()) {
-    // Stop the script and display a connection error
+    // Stop the script and display a professional error message
     exit('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 
-// --- 2. Fetch Initial Data ---
+// --- 2. Corrected Logic to Fetch Data ---
 
-// Get the latest registration number securely
-$reg_no = 1; // Default value
-$sql_reg = "SELECT MAX(s_reg_no) AS max_reg FROM setting_tb_std";
-$result_reg = mysqli_query($conn, $sql_reg);
-if ($row_reg = mysqli_fetch_assoc($result_reg)) {
-    $reg_no = $row_reg['max_reg'] + 1;
+// Get the latest registration number reliably
+$reg_no = 1; // Default if table is empty
+$sql1 = "SELECT MAX(s_reg_no) AS max_reg FROM setting_tb_std";
+$result1 = mysqli_query($conn, $sql1);
+if ($row1 = mysqli_fetch_assoc($result1)) {
+    // Increment the highest existing registration number
+    $reg_no = $row1['max_reg'] + 1;
 }
 
 // Fetch classes for the dropdown
-$sql_classes = "SELECT class_id, class_name FROM classes ORDER BY class_name ASC";
-$result_classes = mysqli_query($conn, $sql_classes);
+$sql = "SELECT class_id, class_name FROM classes ";
+$result = mysqli_query($conn, $sql);
 
 // Fetch sessions for the dropdown
-$sql_sessions = "SELECT DISTINCT st_session FROM fee_sett ORDER BY st_session DESC";
-$result_sessions = mysqli_query($conn, $sql_sessions);
+$sql2 = "SELECT DISTINCT st_session FROM fee_sett ";
+$result2 = mysqli_query($conn, $sql2);
 
 ?>
 <!DOCTYPE html>
@@ -43,58 +41,55 @@ $result_sessions = mysqli_query($conn, $sql_sessions);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration Form</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f7f6;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
             margin: 0;
             padding: 20px;
-            color: #333;
         }
         .container {
             max-width: 1200px;
             margin: auto;
             background: #ffffff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
         }
         h1 {
+            font-size: 24px;
             color: #4a148c;
             text-align: center;
-            border-bottom: 2px solid #4a148c;
-            padding-bottom: 10px;
             margin-bottom: 25px;
         }
+        /* Modern form layout using CSS Grid */
         .form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
         }
         fieldset {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
-            grid-column: span 2; /* Make fieldsets span both columns */
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0;
+            grid-column: span 2; /* Make each fieldset span the full width */
         }
         legend {
-            font-weight: 700;
+            font-weight: 500;
             color: #6a1b9a;
             padding: 0 10px;
         }
         .form-group {
             display: flex;
             flex-direction: column;
-            margin-bottom: 15px;
+            gap: 8px;
         }
         label {
-            margin-bottom: 5px;
             font-weight: 500;
+            color: #333;
         }
         input[type="text"],
         input[type="email"],
@@ -102,54 +97,43 @@ $result_sessions = mysqli_query($conn, $sql_sessions);
         select,
         textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box; /* Important for padding */
+            border-radius: 5px;
+            box-sizing: border-box;
             font-size: 1rem;
+            transition: border-color 0.3s;
         }
         input:focus, select:focus, textarea:focus {
             border-color: #6a1b9a;
             outline: none;
-        }
-        .dob-group {
-            display: flex;
-            gap: 10px;
-        }
-        .dob-group select {
-            flex: 1;
-        }
-        .radio-group label {
-            margin-right: 15px;
         }
         .submit-btn {
             background-color: #6a1b9a;
             color: white;
             padding: 12px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 1.1rem;
-            font-weight: 500;
             width: 100%;
             grid-column: span 2;
         }
         .submit-btn:hover {
             background-color: #4a148c;
         }
-        .ajax-content {
-            padding: 15px;
-            border: 1px dashed #ccc;
-            border-radius: 5px;
-            min-height: 100px;
-            background-color: #fafafa;
+        .ajax-section {
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 150px;
         }
         /* Responsive Design */
-        @media (max-width: 768px) {
+        @media (max-width: 800px) {
             .form-grid {
                 grid-template-columns: 1fr;
             }
-            .submit-btn {
+            fieldset, .submit-btn {
                 grid-column: span 1;
             }
         }
@@ -159,179 +143,183 @@ $result_sessions = mysqli_query($conn, $sql_sessions);
 
 <div class="container">
     <form action="s_insert.php" method="POST" enctype="multipart/form-data">
-        <h1>Student Registration Form</h1>
+        <h1>STUDENT INFORMATION FORM</h1>
         
         <?php 
-            // Display session-based error messages if they exist
-            if (isset($_SESSION['form_err']) && $_SESSION['form_err'] != "") {
-                echo '<p style="color: red; text-align: center;">' . htmlspecialchars($_SESSION['form_err']) . '</p>';
-                // Unset the error message so it doesn't show again
-                unset($_SESSION['form_err']); 
+            // Display and clear session error message securely
+            if (!empty($_SESSION['form_err'])) {
+                echo '<p style="color: red; text-align: center; font-weight: bold;">' . htmlspecialchars($_SESSION['form_err']) . '</p>';
+                unset($_SESSION['form_err']); // Clear the error after displaying
             }
         ?>
 
         <div class="form-grid">
-
+            
             <fieldset>
-                <legend>Academic Information</legend>
+                <legend>Academic Details</legend>
                 <div class="form-group">
-                    <label for="reg_no">Registration Number</label>
+                    <label for="reg_no">REGISTRATION NUMBER</label>
                     <input type="text" id="reg_no" name="REG_NO" value="<?php echo htmlspecialchars($reg_no); ?>" readonly>
                 </div>
-                 <div class="form-group">
-                    <label for="reg_date">Registration Date</label>
-                    <input type="date" id="reg_date" name="reg_date" required>
+                <div class="form-group">
+                    <label for="current-date-input">Registration Date</label>
+                    <input type="date" id="current-date-input" name="reg_date" required>
                 </div>
                 <div class="form-group">
                     <label for="class_nm1">Class</label>
-                    <select name="class_nm1" id="class_nm1" onchange="fetchClassData()" required>
+                    <select name="class_nm1" id="class_nm1" onchange="class_sel()" required>
                         <option value="">-- Select Class --</option>
-                        <?php while ($row = mysqli_fetch_assoc($result_classes)) : ?>
-                            <option value="<?php echo htmlspecialchars($row['class_id']); ?>">
-                                <?php echo htmlspecialchars($row['class_name']); ?>
+                        <?php while ($rows = mysqli_fetch_assoc($result)) : ?>
+                            <option value="<?php echo htmlspecialchars($rows['class_id']); ?>">
+                                <?php echo htmlspecialchars($rows['class_name']); ?>
                             </option>
                         <?php endwhile; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="class_nm2">Session</label>
-                    <select name="ses_nm" id="class_nm2" onchange="fetchClassData()" required>
+                    <select name="ses_nm" id="class_nm2" onchange="class_sel()" required>
                         <option value="">-- Select Session --</option>
-                        <?php while ($row = mysqli_fetch_assoc($result_sessions)) : ?>
-                            <option value="<?php echo htmlspecialchars($row['st_session']); ?>">
-                                <?php echo htmlspecialchars($row['st_session']); ?>
+                        <?php while ($rows = mysqli_fetch_assoc($result2)) : ?>
+                            <option value="<?php echo htmlspecialchars($rows['st_session']); ?>">
+                                <?php echo htmlspecialchars($rows['st_session']); ?>
                             </option>
                         <?php endwhile; ?>
                     </select>
                 </div>
             </fieldset>
-
+            
             <fieldset>
-                <legend>Student Information</legend>
+                <legend>Personal Information</legend>
                 <div class="form-group">
-                    <label for="first_name">First Name</label>
+                    <label for="first_name">FIRST NAME</label>
                     <input type="text" id="first_name" name="First_Name" maxlength="30" required>
                 </div>
                 <div class="form-group">
-                    <label for="last_name">Last Name</label>
+                    <label for="last_name">LAST NAME</label>
                     <input type="text" id="last_name" name="Last_Name" maxlength="30" required>
                 </div>
                 <div class="form-group">
-                    <label>Gender</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="Gender" value="Male" required> Male</label>
-                        <label><input type="radio" name="Gender" value="Female"> Female</label>
-                    </div>
+                    <label for="father_name">FATHER'S NAME</label>
+                    <input type="text" id="father_name" name="Father_Name" maxlength="30" required>
                 </div>
                 <div class="form-group">
-                    <label>Date of Birth</label>
+                    <label for="mother_name">MOTHER'S NAME</label>
+                    <input type="text" id="mother_name" name="Mother_Name" maxlength="30" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob">DATE OF BIRTH</label>
                     <input type="date" id="dob" name="date_of_birth" required>
                 </div>
                 <div class="form-group">
-                    <label for="fileupload">Student Photo</label>
-                    <input type="file" name="fileupload" id="fileupload" accept="image/*">
+                    <label>GENDER</label>
+                    <div>
+                        <input type="radio" id="male" name="Gender" value="Male" required> <label for="male">Male</label>
+                        <input type="radio" id="female" name="Gender" value="Female"> <label for="female">Female</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                      <input type="file" name="fileupload" id="fileupload"  class=" file"class="file_up" value="fileupload" accept="images/*" onchange="upload(event)"> <br>
+      <div id="imagePreviewContainer">
+          <img id ="previewImage" src="#" alt="Image Preview" style="Display:none;max-width:80px;max-height:100px;">
+      </div>
                 </div>
             </fieldset>
 
             <fieldset>
-                <legend>Parent & Contact Information</legend>
+                <legend>Contact Details</legend>
                 <div class="form-group">
-                    <label for="father_name">Father's Name</label>
-                    <input type="text" id="father_name" name="Father_Name" maxlength="30" required>
-                </div>
-                <div class="form-group">
-                    <label for="mother_name">Mother's Name</label>
-                    <input type="text" id="mother_name" name="Mother_Name" maxlength="30" required>
-                </div>
-                 <div class="form-group">
-                    <label for="mobile_number">Mobile Number</label>
+                    <label for="mobile_number">MOBILE NUMBER</label>
                     <input type="text" id="mobile_number" name="Mobile_Number" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number" required>
                 </div>
-                 <div class="form-group">
-                    <label for="email_id">Email ID</label>
+                <div class="form-group">
+                    <label for="email_id">EMAIL ID</label>
                     <input type="email" id="email_id" name="Email_Id" maxlength="100">
                 </div>
                 <div class="form-group">
-                    <label for="address">Address</label>
-                    <textarea id="address" name="Address" rows="3" required></textarea>
+                    <label for="address">ADDRESS</label>
+                    <textarea id="address" name="Address" rows="4" required></textarea>
                 </div>
             </fieldset>
-
-            <div class="ajax-container">
-                <h3>Subjects</h3>
-                <div id="subjects-output" class="ajax-content">
-                    <p>Please select a class to see subjects.</p>
+            
+            <div class="ajax-section">
+                <h3>SUBJECTS</h3>
+                <div id="ans">
+                    <p>Select a class to view subjects.</p>
                 </div>
             </div>
 
-            <div class="ajax-container">
-                <h3>Fee Structure</h3>
-                <div id="fees-output" class="ajax-content">
-                    <p>Please select a class and session.</p>
+            <div class="ajax-section">
+                <h3>FEE STRUCTURE</h3>
+                <div id="fees">
+                    <p>Select a class and session to view fees.</p>
                 </div>
+                <div id="net"></div>
             </div>
 
-            <button type="submit" class="submit-btn">Register Student</button>
+            <button type="submit" class="submit-btn">SUBMIT REGISTRATION</button>
         </div>
     </form>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+  <script src="preview.js"> </script>
 <script type="text/javascript">
-    // Set the registration date to today by default
-    document.addEventListener('DOMContentLoaded', () => {
-        const dateInput = document.getElementById('reg_date');
+    // --- JAVASCRIPT FUNCTIONS - UNCHANGED AS REQUESTED ---
+    function class_sel() {
+       var x = document.getElementById("class_nm1").value;
+       var n = document.getElementById("class_nm2").value;
+        $.ajax({
+            url: "show_class.php",
+            method: "POST",
+            data: {
+                id: x
+            },
+            success: function(data) {
+                $("#ans").html(data);
+            }
+        });
+       $.ajax({
+            url: "fee_Structure.php",
+            method: "POST",
+            data: {
+                id: x,
+                id1: n
+            },
+            success: function(data) {
+                $("#fees").html(data);
+            }
+        });
+    }
+
+    function net_fee() {
+       var x = document.getElementById("class_nm1").value;
+       var n = document.getElementById("class_nm2").value;
+       var f = document.getElementById("class_nm3").value; // Note: Ensure an element with id="class_nm3" exists for this to work
+        $.ajax({
+            url: "total_net_fee.php",
+            method: "POST",
+            data: {
+                id: x,
+                id5: n,
+                id8: f
+            },
+            success: function(data) {
+                $("#net").html(data);
+            }
+        });
+    }
+
+    // --- SCRIPT TO SET CURRENT DATE - TYPOS FIXED ---
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const dateInput = document.getElementById("current-date-input");
         const today = new Date().toISOString().split('T')[0];
         dateInput.value = today;
     });
-
-    // Function to fetch class-related data via AJAX
-    function fetchClassData() {
-        const classId = $("#class_nm1").val();
-        const sessionId = $("#class_nm2").val();
-
-        // Only proceed if a class is selected
-        if (classId) {
-            // AJAX call for subjects
-            $.ajax({
-                url: "show_class.php", // PHP file to get subjects
-                method: "POST",
-                data: { id: classId },
-                success: function(data) {
-                    $("#subjects-output").html(data);
-                },
-                error: function() {
-                    $("#subjects-output").html("<p>Error loading subjects.</p>");
-                }
-            });
-        } else {
-            $("#subjects-output").html("<p>Please select a class to see subjects.</p>");
-        }
-        
-        // Only proceed if both class and session are selected
-        if (classId && sessionId) {
-            // AJAX call for fee structure
-            $.ajax({
-                url: "fee_Structure.php", // PHP file to get fees
-                method: "POST",
-                data: { id: classId, id1: sessionId },
-                success: function(data) {
-                    $("#fees-output").html(data);
-                },
-                error: function() {
-                    $("#fees-output").html("<p>Error loading fee structure.</p>");
-                }
-            });
-        } else {
-             $("#fees-output").html("<p>Please select a class and session.</p>");
-        }
-    }
 </script>
-
 </body>
 </html>
 <?php
-// Close the database connection at the end of the script
+// Close the database connection at the end
 mysqli_close($conn);
 ?>

@@ -48,7 +48,7 @@ $result1 = mysqli_query($conn1, $sql3);
 $rows1= mysqli_fetch_array ($result1);
 $class_n = $rows1['class_name'];
   $pic_nm=$target_dir.trim($_POST['REG_NO']).".".$fileType;
-  $sql = "INSERT INTO students (First_Name, Last_Name,Father_Name,Mother_Name,class_nm1, Section, Birth_day,Birth_month,Birth_year, Email_Id,Mobile_Number, Gender,  Address,  City,  Pin_Code,State, Country,S_REG_NUM,std_pic,st_session,Sibling,reg_date,Sibling_dis)
+  $sql = "INSERT INTO students (First_Name, Last_Name,Father_Name,Mother_Name,class_nm1, Section, Birth_day,Birth_month,Birth_year, Email_Id,Mobile_Number, Gender,  Address,  City,  Pin_Code,State, Country,S_REG_NUM,std_pic,st_session,Sibling,reg_date,Sibling_Des)
   VALUES ('$snf', '$snl','$snfth','$snmth', '$class_n', '$section', '$Day', '$Month','$Year','$email','$phone','$gender','$add', '$city','$code', '$state', '$country',$reg_num,'$pic_nm' ,'$class_nm2','$Sib','$date','$des')";
  
   echo $sql;
