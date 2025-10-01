@@ -45,6 +45,12 @@ $result2 = mysqli_query($conn, $sql2);
             border-radius: 0.375rem;
             min-height: 200px;
         }
+        label{
+font-size:25px;
+color:black;
+font-weight:500;
+font-style:bold;
+        }
     </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript">
@@ -99,7 +105,7 @@ $result2 = mysqli_query($conn, $sql2);
 <div class="container my-5">
     <div class="card">
         <div class="card-header text-center">
-            <h2>Student Registration Form</h2>
+            <h2>STUDENT REGISTRATION FORM</h2>
         </div>
         <div class="card-body p-4">
 
@@ -270,7 +276,7 @@ $result2 = mysqli_query($conn, $sql2);
                 </div>
                 
                 <div class="mt-4 pt-3 border-top">
-                    <button type="submit" class="btn btn-primary btn-lg w-100">Register Student</button>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">SUBMIT HERE</button>
                 </div>
             </form>
         </div>

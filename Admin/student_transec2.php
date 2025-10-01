@@ -65,13 +65,28 @@ $result3 = mysqli_query($conn1,$sql3);
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .card-header {
-      background-color: #0d6efd;
+      background-color:purple ;
       color: white;
+      font-style: italic;
     }
     #net_f {
         font-size: 1.5rem;
         font-weight: bold;
         color: #198754;
+    }.d-grid button{
+background-color: purple;
+    }
+    .d-grid button:hover{
+background-color: #4B0082;
+    }
+    label{
+      font-size:20px;
+      font-weight: bold;
+      color: purple;
+    }
+    h4{
+      color: purple;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -171,7 +186,7 @@ $result3 = mysqli_query($conn1,$sql3);
                 ?>
 
                 <div class="d-grid">
-                    <button class="btn btn-primary btn-lg" type="submit">Submit Transaction</button>
+                    <button class="btn btn-primary btn-lg" type="submit">SUBMIT TRANSACTION</button>
                 </div>
             </form>
         </div>
