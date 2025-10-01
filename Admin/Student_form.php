@@ -44,9 +44,7 @@ h1{
   width:600px;
   border:1px solid red;
 }
- .subject_name th {
- text-align:center;
- }
+ 
 .div3 {
     grid-column-start: 2;
       width:600px;
