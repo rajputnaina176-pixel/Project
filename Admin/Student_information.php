@@ -211,7 +211,7 @@ while($rows= mysqli_fetch_array ($result1)){?>
 
       <div class="form-group">
         <label>Gender</label>
-        <input type="radio" name="gender" value="<?php echo $rows['Gender']?>"readonly="readonly"/>
+        <input type="text" name="gender" value="<?php echo $rows['Gender']?>"readonly="readonly"/>
   
       </div>
 
@@ -225,13 +225,22 @@ while($rows= mysqli_fetch_array ($result1)){?>
         <input type="text" name="mobile"value="<?php echo $rows['Mobile_Number']?>" maxlength="10 "readonly="readonly">
       </div>
 
-      <div class="form-group">
-        <label>Upload Image</label>
-        <input type="file" name="fileupload" id="fileupload" accept="image/*" onchange="pic(event)" value="<?php echo $rows['std_pic']?>"readonly="readonly">
-        <div id="imagePreviewContainer">
-          <img id ="previewImage" src="#" alt="Image Preview" style="Display:none;max-width:80px;max-height:100px;">
-      </div>
-      </div>
+     <div class="form-group">
+    <label>Upload Image</label>
+    
+    <?php
+        // Check if there is an image filename in the database
+        $imagePath = !empty($rows['std_pic']) ? "../". htmlspecialchars($rows['std_pic']) : '';
+    ?>
+
+  
+    <div id="imagePreviewContainer">
+        <img id="previewImage" 
+             src="<?php echo $imagePath; ?>" 
+             alt="Student Image" 
+             style="display: <?php echo !empty($imagePath) ? 'block' : 'none'; ?>; max-width:100px; max-height:100px;">
+    </div>
+</div>
     </div>
 
     <!-- Right Section -->
@@ -264,14 +273,12 @@ while($rows= mysqli_fetch_array ($result1)){?>
   </div>
       <div class="form-group">
         <label>Sibling Description</label>
-        <input type="hidden" name="sibling_desc" value="<?php echo $rows['Sibling_dis']?>" readonly="readonly">
-        <textarea name="sibling_desc" rows="3"></textarea>
+        <input type="text" name="sibling_des" value="<?php echo $rows['Sibling_Des']?>" readonly="readonly">
       </div>
 
       <div class="form-group">
         <label>Address</label>
-        <input type="hidden" name="address" value="<?php echo $rows['Address']?>" readonly="readonly">
-        <textarea name="address" rows="3"></textarea>
+        <textarea name="address" rows="3" readonly><?php echo $rows['Address'] ?></textarea>
       </div>
 
       <div class="form-group">
