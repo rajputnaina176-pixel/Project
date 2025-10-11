@@ -46,9 +46,9 @@ $result2 = mysqli_query($conn, $sql2);
             min-height: 200px;
         }
         label{
-font-size:25px;
+font-size:15px;
 color:black;
-font-weight:500;
+font-weight:200;
 font-style:bold;
         }
     </style>
@@ -102,10 +102,10 @@ font-style:bold;
 </head>
 <body>
 
-<div class="container my-5">
+<div class="container my-5width: 50%;">
     <div class="card">
         <div class="card-header text-center">
-            <h2>STUDENT REGISTRATION FORM</h2>
+            <h2 style="color:white;font-size:20px;">STUDENT REGISTRATION FORM</h2>
         </div>
         <div class="card-body p-4">
 

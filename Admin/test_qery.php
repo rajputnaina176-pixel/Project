@@ -12,7 +12,7 @@ while($row= mysqli_fetch_array ($result1)){
                      <td><?php echo $row['class_nm1']." ".$row['Section'] ?></td>
                     <td><?php echo $row['Father_Name'] ?></td>
                      <td><?php echo $row['Birth_day']. "-" .$row['Birth_month']."-".$row['Birth_year']?></td>
-                    <td><a href="Admin.php?id1=6&id=<?php echo $row['id']; ?>">Edit</a></td>
+                    <td><a href="Student_Edit.php?re=<?php echo $row['S_REG_NUM']; ?>">Edit</a></td>
                     <td><a href="Delete.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure?')">Delete</a></td>
                      <td><a href="filter.php?reg_num=<?php echo $row['S_REG_NUM']; ?>">View</a></td>
                         <td><a href="Student_information.php?re=<?php echo $row['S_REG_NUM']; ?>">View</a></td>
